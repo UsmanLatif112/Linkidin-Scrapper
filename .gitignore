@@ -13,3 +13,6 @@ __pycache__/
 .DS_Store
 Thumbs.db
 .vscode
+
+# Ignore browser-specific files
+drivers/peofile

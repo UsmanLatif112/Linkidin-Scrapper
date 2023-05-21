@@ -37,6 +37,10 @@ class BasePage:
         """This method will find and return an element from another element"""
         return element.find_element(selector.ST, selector.SP)
 
+    def find_all_from_element(self, element: WebElement, selector: Selector) -> List[WebElement]:
+        """This method will find and return an element from another element"""
+        return element.find_elements(selector.ST, selector.SP)
+
     def find_all(self, selector: Selector) -> List[WebElement]:
         """This method will find and return a list of all available element from the driver"""
         return self.driver.find_elements(selector.ST, selector.SP)

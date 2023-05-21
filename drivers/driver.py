@@ -7,7 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 BASE_DIR = Path(__file__).resolve().parent
 
-def get_undetected_chrome_browser(profile):
+def get_undetected_chrome_browser(profile=None):
     """Returns an instance of an undetected Chrome browser with added features to make it more undetectable and secure.
     The browser will save the profile and cookies to the specified folder so that you don't have to log in every time.
 
