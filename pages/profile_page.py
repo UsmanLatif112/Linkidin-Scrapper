@@ -97,7 +97,9 @@ class ProfilePage(BasePage):
     
     def export_experience(self):
         for experience in self.experience_list:
-            make_csv("linkidin_experience.csv", f'{experience["designation"]};{experience["company"]};{experience["from_date"]};{experience["to_date"]};{self.people_id}\n', new=False)
+            if experience["company"] == experience["from_date"]:
+                experience["company"] = ""
+            make_csv("linkidin_experience.csv", f'''{experience["designation"]};{experience["company"]};{experience["from_date"]};{experience["to_date"]};{self.people_id}\n''', new=False)
         make_csv("linkidin_experience.csv", "\n\n", new=False)
         self.experience_list.clear()
         time.sleep(5)
@@ -105,7 +107,9 @@ class ProfilePage(BasePage):
 
     def export_education(self):
         for education in self.education_list:
-            make_csv("linkidin_education.csv", f'{education["degree"]};{education["from_date"]};{education["to_date"]};{education["institude"]};{self.people_id}\n', new=False)
+            if education["degree"] == education["from_date"]:
+                education["degree"] = ""
+            make_csv("linkidin_education.csv", f"""{education["degree"]};{education["from_date"]};{education["to_date"]};{education["institude"]};{self.people_id}\n""", new=False)
         make_csv("linkidin_education.csv", "\n\n", new=False)
         self.education_list.clear()
         return self

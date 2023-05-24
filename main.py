@@ -25,7 +25,7 @@ def main():
     with open(input_file, "r") as file:
         reader = csv.reader(file)
         make_csv("linkidin_experience.csv", "Role; Organization; Start date; End date; People ID\n", new=True)
-        make_csv("linkidin_education.csv", "Institute; Degree; Start date; End date; People ID\n", new=True)
+        make_csv("linkidin_education.csv", "Degree; Start date; End date; Institute; People ID\n", new=True)
         for row in reader:
             url = row[0]
             people_id = row[1]
