@@ -15,7 +15,7 @@ output_file = BASE_DIR / "output.csv"
 def main():
     # Get a new undetected Chrome browser instance for the user
     
-    USERNAME = "jerrykamal0026@gmail.com"
+    USERNAME = "linkedint31@gmail.com"
     PASSWORD = "Usman@112"
     
     
@@ -30,12 +30,13 @@ def main():
             url = row[0]
             people_id = row[1]
             
-            
-            profile = ProfilePage(url, people_id, driver).get_experience()\
-                .get_education()\
-                .export_education()\
-                .export_experience()
-            
+            try:
+                profile = ProfilePage(url, people_id, driver).get_experience()\
+                    .get_education()\
+                    .export_education()\
+                    .export_experience()
+            except:
+                pass
             
                     
 
