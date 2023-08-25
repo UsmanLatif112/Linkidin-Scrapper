@@ -20,6 +20,7 @@ def main():
     
     
 
+    # driver = get_undetected_chrome_browser('christoph')
     driver = get_undetected_chrome_browser('christoph')
     
     with open(input_file, "r") as file:
