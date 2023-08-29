@@ -1,3 +1,5 @@
-2023/08/22-18:27:26.812 3ba0 Reusing MANIFEST C:\Users\HP\Desktop\Desktop Data\linkIdin-Scrapper\drivers\profile\christoph\Default\Local Storage\leveldb/MANIFEST-000001
-2023/08/22-18:27:26.813 3ba0 Recovering log #21
-2023/08/22-18:27:26.818 3ba0 Reusing old log C:\Users\HP\Desktop\Desktop Data\linkIdin-Scrapper\drivers\profile\christoph\Default\Local Storage\leveldb/000021.log 
+2023/08/29-14:50:16.942 2924 Reusing MANIFEST C:\Users\HP\Desktop\New folder\linkIdin-Scrapper\drivers\profile\christoph\Default\Local Storage\leveldb/MANIFEST-000001
+2023/08/29-14:50:16.943 2924 Recovering log #43
+2023/08/29-14:50:16.943 2924 Level-0 table #45: started
+2023/08/29-14:50:16.951 2924 Level-0 table #45: 15387 bytes OK
+2023/08/29-14:50:16.957 2924 Delete type=0 #43

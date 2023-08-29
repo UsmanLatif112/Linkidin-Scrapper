@@ -30,9 +30,10 @@ def main():
         for row in reader:
             url = row[0]
             people_id = row[1]
+            F_company = row[2]
             
             try:
-                profile = ProfilePage(url, people_id, driver).get_experience()\
+                profile = ProfilePage(url, people_id, F_company, driver).get_experience()\
                     .get_education()\
                     .export_education()\
                     .export_experience()

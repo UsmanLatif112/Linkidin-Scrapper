@@ -1,7 +1,7 @@
-import contextlib, time
+import contextlib
+import time
 from .page import BasePage
 from resources.resourcces import ProfileResources
-
 
 
 def make_csv(filename: str, data, new=True):
@@ -16,9 +16,10 @@ def make_csv(filename: str, data, new=True):
 class ProfilePage(BasePage):
     experience_list = []
     education_list = []
-    def __init__(self, url: str, people_id: str, *args, **kwargs) -> None:
+    def __init__(self, url: str, people_id: str, F_company: str,  *args, **kwargs) -> None:
         self.url = url
         self.people_id = people_id
+        self.founder_company = F_company
         super().__init__(*args, **kwargs)
 
     def get_experience(self):
@@ -104,25 +105,97 @@ class ProfilePage(BasePage):
                 pass
         return self
     
+    # =============================================================
+    # =============================================================
+    
     def export_experience(self):
-        for experience in self.experience_list:
+        max_lines = 7  # Maximum number of lines to print initially
+        company_match = False  # Flag to indicate if Fcompany is found in experience list
+        make_csv("linkidin_experience.csv", f"{self.people_id};\n", new=False)
+        
+        # Separate experiences into founder company lines and other lines
+        founder_company_lines = []
+        other_lines = []
+        
+        for idx, experience in enumerate(self.experience_list):
+            if idx >= max_lines:  # Print only up to max_lines
+                break
+                
             if experience["company"] == experience["from_date"]:
                 experience["company"] = ""
-            make_csv("linkidin_experience.csv", f'''{experience["company"]};{experience["designation"]};{experience["from_date"]};{experience["to_date"]};{self.people_id};''', new=False)
+                
+            if self.founder_company in experience["company"]:
+                company_match = True
+                max_lines = 8  # Change the max_lines to 8 if there's a match
+                
+                is_founder_flag = "1"
+                formatted_line = f"{experience['company']};{is_founder_flag};{experience['designation']};{experience['from_date']};{experience['to_date']};"
+                founder_company_lines.append(formatted_line)
+            else:
+                is_founder_flag = "0"
+                formatted_line = f"{experience['company']};{is_founder_flag};{experience['designation']};{experience['from_date']};{experience['to_date']};"
+                other_lines.append(formatted_line)
+        
+        # Print founder company lines first, then other lines
+        for line in founder_company_lines:
+            make_csv("linkidin_experience.csv", line + '\n', new=False)
+        
+        for line in other_lines:
+            make_csv("linkidin_experience.csv", line + '\n', new=False)
+        
         make_csv("linkidin_experience.csv", "\n\n", new=False)
-        # make_csv("linkidin_experience.csv", f'''{experience["designation"]};{experience["company"]};{experience["from_date"]};{experience["to_date"]};{self.people_id}\n''', new=False)
-        # make_csv("linkidin_experience.csv", "\n\n", new=False)
         self.experience_list.clear()
         time.sleep(5)
         return self
 
+
+    # =============================================================
+
     def export_education(self):
-        for education in self.education_list:
+        max_lines = 6  # Maximum number of lines to print
+        make_csv("linkidin_education.csv", f"""{self.people_id};\n""", new=False)
+        for idx, education in enumerate(self.education_list):
+            if idx >= max_lines:  # Print only up to max_lines
+                break
             if education["degree"] == education["from_date"]:
                 education["degree"] = ""
-            make_csv("linkidin_education.csv", f"""{education["institude"]};{education["degree"]};{education["from_date"]};{education["to_date"]};{self.people_id};""", new=False)
+            make_csv("linkidin_education.csv", f"""{education["institude"]};{education["degree"]};{education["from_date"]};{education["to_date"]};\n""", new=False)
+        
         make_csv("linkidin_education.csv", "\n\n", new=False)
-        # make_csv("linkidin_education.csv", f"""{education["degree"]};{education["from_date"]};{education["to_date"]};{education["institude"]};{self.people_id}\n""", new=False)
-        # make_csv("linkidin_education.csv", "\n", new=False)
         self.education_list.clear()
+        time.sleep(5)
         return self
+
+   
+    # =============================================================
+    # =============================================================
+    
+    
+    
+    # def export_experience(self):
+    #     for experience in self.experience_list:
+    #         if experience["company"] == experience["from_date"]:
+    #             experience["company"] = ""
+    #         make_csv("linkidin_experience.csv", f'''{experience["company"]};{experience["designation"]};{experience["from_date"]};{experience["to_date"]};{self.people_id};''', new=False)
+    #     make_csv("linkidin_experience.csv", "\n\n", new=False)
+    #     # make_csv("linkidin_experience.csv", f'''{experience["designation"]};{experience["company"]};{experience["from_date"]};{experience["to_date"]};{self.people_id}\n''', new=False)
+    #     # make_csv("linkidin_experience.csv", "\n\n", new=False)
+    #     self.experience_list.clear()
+    #     time.sleep(5)
+    #     return self
+
+    # def export_education(self):
+    #     for education in self.education_list:
+    #         if education["degree"] == education["from_date"]:
+    #             education["degree"] = ""
+    #         make_csv("linkidin_education.csv", f"""{education["institude"]};{education["degree"]};{education["from_date"]};{education["to_date"]};{self.people_id};""", new=False)
+    #     make_csv("linkidin_education.csv", "\n\n", new=False)
+    #     # make_csv("linkidin_education.csv", f"""{education["degree"]};{education["from_date"]};{education["to_date"]};{education["institude"]};{self.people_id}\n""", new=False)
+    #     # make_csv("linkidin_education.csv", "\n", new=False)
+    #     self.education_list.clear()
+    #     return self
+    
+    
+    
+    # =============================================================
+    # =============================================================
