@@ -138,10 +138,10 @@ class ProfilePage(BasePage):
         
         # Print founder company lines first, then other lines
         for line in founder_company_lines:
-            make_csv("linkidin_experience.csv", line + '\n', new=False)
+            make_csv("linkidin_experience.csv", line, new=False)
         
         for line in other_lines:
-            make_csv("linkidin_experience.csv", line + '\n', new=False)
+            make_csv("linkidin_experience.csv", line, new=False)
         
         make_csv("linkidin_experience.csv", "\n\n", new=False)
         self.experience_list.clear()
@@ -159,7 +159,7 @@ class ProfilePage(BasePage):
                 break
             if education["degree"] == education["from_date"]:
                 education["degree"] = ""
-            make_csv("linkidin_education.csv", f"""{education["institude"]};{education["degree"]};{education["from_date"]};{education["to_date"]};\n""", new=False)
+            make_csv("linkidin_education.csv", f"""{education["institude"]};{education["degree"]};{education["from_date"]};{education["to_date"]};""", new=False)
         
         make_csv("linkidin_education.csv", "\n\n", new=False)
         self.education_list.clear()

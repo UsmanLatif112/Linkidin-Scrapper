@@ -1,5 +1,3 @@
-2023/08/29-14:50:16.942 2924 Reusing MANIFEST C:\Users\HP\Desktop\New folder\linkIdin-Scrapper\drivers\profile\christoph\Default\Local Storage\leveldb/MANIFEST-000001
-2023/08/29-14:50:16.943 2924 Recovering log #43
-2023/08/29-14:50:16.943 2924 Level-0 table #45: started
-2023/08/29-14:50:16.951 2924 Level-0 table #45: 15387 bytes OK
-2023/08/29-14:50:16.957 2924 Delete type=0 #43
+2023/08/31-12:37:43.818 434 Reusing MANIFEST D:\pyhton projects\Company\Linkedin Scraper\linkIdin-Scrapper\drivers\profile\christoph\Default\Local Storage\leveldb/MANIFEST-000001
+2023/08/31-12:37:43.822 434 Recovering log #65
+2023/08/31-12:37:43.829 434 Reusing old log D:\pyhton projects\Company\Linkedin Scraper\linkIdin-Scrapper\drivers\profile\christoph\Default\Local Storage\leveldb/000065.log 
