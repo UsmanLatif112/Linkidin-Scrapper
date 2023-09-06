@@ -23,41 +23,26 @@ class ProfilePage(BasePage):
         super().__init__(*args, **kwargs)
 
     def get_experience(self):
-        experience_url = f"{self.url}details/experience/"
-        self.driver.get(experience_url)
-        if 'This page doesn’t exist' not in self.driver.page_source:
-            containers = self.wait_until_find_all(ProfileResources.company_containers)
-            for container in containers:
-                designation = ''
-                company_name = ''
-                date = ''
-                from_date = ''
-                to_date = ''
-                try:
-                    designation = self.find_from_element(container, ProfileResources.company_without_link).text
-                    with contextlib.suppress(Exception):
-                        company_name = self.find_from_element(container, ProfileResources.experience_without_link).text.split(' · ')[0]
-                    with contextlib.suppress(Exception):
-                        date = self.find_from_element(container, ProfileResources.date).text.split(' · ')[0]
-                        from_date = date.split(' - ')[0]
+        try:
+            experience_url = f"{self.url}details/experience/"
+            self.driver.get(experience_url)
+            if 'This page doesn’t exist' not in self.driver.page_source:
+                containers = self.wait_until_find_all(ProfileResources.company_containers)
+                for container in containers:
+                    designation = ''
+                    company_name = ''
+                    date = ''
+                    from_date = ''
+                    to_date = ''
+                    try:
+                        designation = self.find_from_element(container, ProfileResources.company_without_link).text
                         with contextlib.suppress(Exception):
-                            to_date = date.split(' - ')[1]
-                    temp_dict = {
-                        "designation": designation,
-                        "company": company_name,
-                        "from_date": from_date,
-                        "to_date": to_date,
-                    }
-                    self.experience_list.append(temp_dict.copy())
-                except:
-                    company_name = self.find_from_element(container, ProfileResources.company).text
-                    experience_containers = self.find_all_from_element(container, ProfileResources.multi_experience_container)
-                    for experience_container in experience_containers:
-                        designation = self.find_from_element(experience_container, ProfileResources.experience).text
-                        date = self.find_from_element(experience_container, ProfileResources.date).text.split(' · ')[0]
-                        from_date = date.split(' - ')[0]
+                            company_name = self.find_from_element(container, ProfileResources.experience_without_link).text.split(' · ')[0]
                         with contextlib.suppress(Exception):
-                            to_date = date.split(' - ')[1]
+                            date = self.find_from_element(container, ProfileResources.date).text.split(' · ')[0]
+                            from_date = date.split(' - ')[0]
+                            with contextlib.suppress(Exception):
+                                to_date = date.split(' - ')[1]
                         temp_dict = {
                             "designation": designation,
                             "company": company_name,
@@ -65,44 +50,65 @@ class ProfilePage(BasePage):
                             "to_date": to_date,
                         }
                         self.experience_list.append(temp_dict.copy())
+                    except:
+                        company_name = self.find_from_element(container, ProfileResources.company).text
+                        experience_containers = self.find_all_from_element(container, ProfileResources.multi_experience_container)
+                        for experience_container in experience_containers:
+                            designation = self.find_from_element(experience_container, ProfileResources.experience).text
+                            date = self.find_from_element(experience_container, ProfileResources.date).text.split(' · ')[0]
+                            from_date = date.split(' - ')[0]
+                            with contextlib.suppress(Exception):
+                                to_date = date.split(' - ')[1]
+                            temp_dict = {
+                                "designation": designation,
+                                "company": company_name,
+                                "from_date": from_date,
+                                "to_date": to_date,
+                            }
+                            self.experience_list.append(temp_dict.copy())
+        except Exception as e:
+            print(e)
         return self
     
     def get_education(self):
-        time.sleep(5)
-        education_url = f"{self.url}details/education/"
-        time.sleep(3)
-        self.driver.get(education_url)
-        if 'This page doesn’t exist' not in self.driver.page_source:
-            degree = ''
-            from_date = ''
-            to_date = ''
-            institude = ''
-            try:
-                education_containers = self.wait_until_find_all(ProfileResources.education_containers)
-                for container in education_containers:
-                    degree = ''
-                    from_date = ''
-                    to_date = ''
-                    institude = ''
-                    with contextlib.suppress(Exception):
-                        degree = self.find_from_element(container, ProfileResources.degree).text
-                    with contextlib.suppress(Exception):
-                        institude = self.find_from_element(container, ProfileResources.institude).text
-                    with contextlib.suppress(Exception):
-                        date = self.find_from_element(container, ProfileResources.date).text.split(' · ')[0]
-                        from_date = date.split(' - ')[0]
+        try:
+            time.sleep(5)
+            education_url = f"{self.url}details/education/"
+            time.sleep(3)
+            self.driver.get(education_url)
+            if 'This page doesn’t exist' not in self.driver.page_source:
+                degree = ''
+                from_date = ''
+                to_date = ''
+                institude = ''
+                try:
+                    education_containers = self.wait_until_find_all(ProfileResources.education_containers)
+                    for container in education_containers:
+                        degree = ''
+                        from_date = ''
+                        to_date = ''
+                        institude = ''
                         with contextlib.suppress(Exception):
-                            to_date = date.split(' - ')[1]
-                    
-                    temp_dict = {
-                            "degree": degree,
-                            "from_date": from_date,
-                            "to_date": to_date,
-                            "institude": institude,
-                        }
-                    self.education_list.append(temp_dict.copy())
-            except:
-                pass
+                            degree = self.find_from_element(container, ProfileResources.degree).text
+                        with contextlib.suppress(Exception):
+                            institude = self.find_from_element(container, ProfileResources.institude).text
+                        with contextlib.suppress(Exception):
+                            date = self.find_from_element(container, ProfileResources.date).text.split(' · ')[0]
+                            from_date = date.split(' - ')[0]
+                            with contextlib.suppress(Exception):
+                                to_date = date.split(' - ')[1]
+                        
+                        temp_dict = {
+                                "degree": degree,
+                                "from_date": from_date,
+                                "to_date": to_date,
+                                "institude": institude,
+                            }
+                        self.education_list.append(temp_dict.copy())
+                except:
+                    pass
+        except Exception as e:
+            print(e)
         return self
     
     # =============================================================
