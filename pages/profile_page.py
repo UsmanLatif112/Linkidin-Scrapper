@@ -20,7 +20,7 @@ def format_date(date_str):
         return date.strftime('%b %Y')  # Format it as 'Mon YYYY'
     except ValueError:
         # If parsing fails, assume it's just a year and add 'JAN' to it
-        return 'JAN ' + date_str if date_str.isdigit() else date_str
+        return 'Jan ' + date_str if date_str.isdigit() else date_str
     
     
     
@@ -34,62 +34,9 @@ class ProfilePage(BasePage):
         self.founder_company = F_company
         super().__init__(*args, **kwargs)
 
-    # def get_experience(self):
-    #     try:
-    #         experience_url = f"{self.url}details/experience/"
-    #         self.driver.get(experience_url)
-    #         if 'This page doesn’t exist' not in self.driver.page_source:
-    #             containers = self.wait_until_find_all(ProfileResources.company_containers)
-    #             for container in containers:
-    #                 designation = ''
-    #                 company_name = ''
-    #                 date = ''
-    #                 from_date = ''
-    #                 to_date = ''
-                    
-    #                 try:
-    #                     designation = self.find_from_element(container, ProfileResources.company_without_link).text
-    #                     with contextlib.suppress(Exception):
-    #                         company_name = self.find_from_element(container, ProfileResources.experience_without_link).text.split(' · ')[0]
-    #                     with contextlib.suppress(Exception):
-    #                         date = self.find_from_element(container, ProfileResources.date).text.split(' · ')[0]
-    #                         from_date = date.split(' - ')[0]
-    #                         with contextlib.suppress(Exception):
-    #                             to_date = date.split(' - ')[1]
-    #                     temp_dict = {
-    #                         "designation": designation,
-    #                         "company": company_name,
-    #                         "from_date": from_date,
-    #                         "to_date": to_date,
-                            
-    #                     }
-    #                     self.experience_list.append(temp_dict.copy())
-    #                 except:
-    #                     company_name = self.find_from_element(container, ProfileResources.company).text
-    #                     experience_containers = self.find_all_from_element(container, ProfileResources.multi_experience_container)
-    #                     for experience_container in experience_containers:
-    #                         designation = self.find_from_element(experience_container, ProfileResources.experience).text
-    #                         date = self.find_from_element(experience_container, ProfileResources.date).text.split(' · ')[0]
-    #                         from_date = date.split(' - ')[0]
-    #                         with contextlib.suppress(Exception):
-    #                             to_date = date.split(' - ')[1]
-    #                         temp_dict = {
-    #                             "designation": designation,
-    #                             "company": company_name,
-    #                             "from_date": from_date,
-    #                             "to_date": to_date,
-    #                         }
-    #                         self.experience_list.append(temp_dict.copy())
-    #     except Exception as e:
-    #         print(e)
-    #     return self
-    
-    # ======================================================
-    
     def get_experience(self):
         try:
-            # experience_url = f"{self.url}details/experience/"
-            experience_url = f"{self.url}/details/experience/"
+            experience_url = f"{self.url}details/experience/"
             self.driver.get(experience_url)
             if 'This page doesn’t exist' not in self.driver.page_source:
                 containers = self.wait_until_find_all(ProfileResources.company_containers)
@@ -99,7 +46,7 @@ class ProfilePage(BasePage):
                     date = ''
                     from_date = ''
                     to_date = ''
-                    duration = ''
+                    
                     try:
                         designation = self.find_from_element(container, ProfileResources.company_without_link).text
                         with contextlib.suppress(Exception):
@@ -116,7 +63,7 @@ class ProfilePage(BasePage):
                             "company": company_name,
                             "from_date": formatted_from_date,
                             "to_date": formatted_to_date,
-                            "duration": duration,
+                            
                         }
                         self.experience_list.append(temp_dict.copy())
                     except:
@@ -124,24 +71,79 @@ class ProfilePage(BasePage):
                         experience_containers = self.find_all_from_element(container, ProfileResources.multi_experience_container)
                         for experience_container in experience_containers:
                             designation = self.find_from_element(experience_container, ProfileResources.experience).text
-                            date, duration = self.find_from_element(experience_container, ProfileResources.date).text.split(' · ')
-                            date, duration = self.find_from_element(container, ProfileResources.date).text.split(' · ')
+                            date = self.find_from_element(experience_container, ProfileResources.date).text.split(' · ')[0]
                             from_date = date.split(' - ')[0]
                             with contextlib.suppress(Exception):
                                 to_date = date.split(' - ')[1]
                             formatted_from_date = format_date(from_date)  # Format the from_date
-                            formatted_to_date = format_date(to_date)  # Format the to_date
+                            formatted_to_date = format_date(to_date) 
                             temp_dict = {
                                 "designation": designation,
                                 "company": company_name,
                                 "from_date": formatted_from_date,
                                 "to_date": formatted_to_date,
-                                "duration": duration,
                             }
                             self.experience_list.append(temp_dict.copy())
         except Exception as e:
             print(e)
         return self
+    
+    # ======================================================
+    
+    # def get_experience(self):
+    #     try:
+    #         # experience_url = f"{self.url}details/experience/"
+    #         experience_url = f"{self.url}details/experience/"
+    #         self.driver.get(experience_url)
+    #         if 'This page doesn’t exist' not in self.driver.page_source:
+    #             containers = self.wait_until_find_all(ProfileResources.company_containers)
+    #             for container in containers:
+    #                 designation = ''
+    #                 company_name = ''
+    #                 date = ''
+    #                 from_date = ''
+    #                 to_date = ''
+    #                 try:
+    #                     designation = self.find_from_element(container, ProfileResources.company_without_link).text
+    #                     with contextlib.suppress(Exception):
+    #                         company_name = self.find_from_element(container, ProfileResources.experience_without_link).text.split(' · ')[0]
+    #                     with contextlib.suppress(Exception):
+    #                         date = self.find_from_element(container, ProfileResources.date).text.split(' · ')[0]
+    #                         from_date = date.split(' - ')[0]
+    #                         with contextlib.suppress(Exception):
+    #                             to_date = date.split(' - ')[1]
+    #                         formatted_from_date = format_date(from_date)  # Format the from_date
+    #                         formatted_to_date = format_date(to_date)  # Format the to_date
+    #                     temp_dict = {
+    #                         "designation": designation,
+    #                         "company": company_name,
+    #                         "from_date": formatted_from_date,
+    #                         "to_date": formatted_to_date,
+    #                     }
+    #                     self.experience_list.append(temp_dict.copy())
+    #                 except:
+    #                     company_name = self.find_from_element(container, ProfileResources.company).text
+    #                     experience_containers = self.find_all_from_element(container, ProfileResources.multi_experience_container)
+    #                     for experience_container in experience_containers:
+    #                         designation = self.find_from_element(experience_container, ProfileResources.experience).text
+    #                         date = self.find_from_element(experience_container, ProfileResources.date).text.split(' · ')[0]
+
+    #                         date = self.find_from_element(container, ProfileResources.date).text.split(' · ')
+    #                         from_date = date.split(' - ')[0]
+    #                         with contextlib.suppress(Exception):
+    #                             to_date = date.split(' - ')[1]
+    #                         formatted_from_date = format_date(from_date)  # Format the from_date
+    #                         formatted_to_date = format_date(to_date)  # Format the to_date
+    #                         temp_dict = {
+    #                             "designation": designation,
+    #                             "company": company_name,
+    #                             "from_date": formatted_from_date,
+    #                             "to_date": formatted_to_date,
+    #                         }
+    #                         self.experience_list.append(temp_dict.copy())
+    #     except Exception as e:
+    #         print(e)
+    #     return self
     
     # ==================================================
     
