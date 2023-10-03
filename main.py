@@ -32,6 +32,11 @@ def main():
             people_id = row[1]
             F_company = row[2]
             
+            # try:
+            #     profile = ProfilePage(url, people_id, F_company, driver).get_experience()\
+            #         .export_experience()
+            # except:
+            #     pass
             try:
                 profile = ProfilePage(url, people_id, F_company, driver).get_experience()\
                     .get_education()\
@@ -39,6 +44,13 @@ def main():
                     .export_experience()
             except:
                 pass
+            # try:
+            #     profile = ProfilePage(url, people_id, driver).get_experience()\
+            #         .get_education()\
+            #         .export_education()\
+            #         .export_experience()
+            # except:
+            #     pass
             
                     
 

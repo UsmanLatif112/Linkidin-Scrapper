@@ -24,8 +24,7 @@ class ProfilePage(BasePage):
 
     def get_experience(self):
         try:
-            # experience_url = f"{self.url}details/experience/"
-            experience_url = f"{self.url}/details/experience/"
+            experience_url = f"{self.url}details/experience/"
             self.driver.get(experience_url)
             if 'This page doesn’t exist' not in self.driver.page_source:
                 containers = self.wait_until_find_all(ProfileResources.company_containers)
@@ -35,7 +34,6 @@ class ProfilePage(BasePage):
                     date = ''
                     from_date = ''
                     to_date = ''
-                    duration = ''
                     try:
                         designation = self.find_from_element(container, ProfileResources.company_without_link).text
                         with contextlib.suppress(Exception):
@@ -50,7 +48,6 @@ class ProfilePage(BasePage):
                             "company": company_name,
                             "from_date": from_date,
                             "to_date": to_date,
-                            "duration": duration,
                         }
                         self.experience_list.append(temp_dict.copy())
                     except:
@@ -58,9 +55,7 @@ class ProfilePage(BasePage):
                         experience_containers = self.find_all_from_element(container, ProfileResources.multi_experience_container)
                         for experience_container in experience_containers:
                             designation = self.find_from_element(experience_container, ProfileResources.experience).text
-                            date, duration = self.find_from_element(experience_container, ProfileResources.date).text.split(' · ')
-                            # date = self.find_from_element(experience_container, ProfileResources.date).text.split(' · ')[0]
-                            date, duration = self.find_from_element(container, ProfileResources.date).text.split(' · ')
+                            date = self.find_from_element(experience_container, ProfileResources.date).text.split(' · ')[0]
                             from_date = date.split(' - ')[0]
                             with contextlib.suppress(Exception):
                                 to_date = date.split(' - ')[1]
@@ -69,7 +64,6 @@ class ProfilePage(BasePage):
                                 "company": company_name,
                                 "from_date": from_date,
                                 "to_date": to_date,
-                                "duration": duration,
                             }
                             self.experience_list.append(temp_dict.copy())
         except Exception as e:
@@ -78,9 +72,8 @@ class ProfilePage(BasePage):
     
     def get_education(self):
         try:
-            time.sleep(3)
-            # education_url = f"{self.url}details/education/"
-            education_url = f"{self.url}/details/education/"
+            time.sleep(5)
+            education_url = f"{self.url}details/education/"
             time.sleep(3)
             self.driver.get(education_url)
             if 'This page doesn’t exist' not in self.driver.page_source:
@@ -117,97 +110,96 @@ class ProfilePage(BasePage):
         except Exception as e:
             print(e)
         return self
+    
     # =============================================================
-    # # =============================================================
-    
-    # def export_experience(self):
-    #     max_lines = 7  # Maximum number of lines to print initially
-    #     company_match = False  # Flag to indicate if Fcompany is found in experience list
-    #     make_csv("linkidin_experience.csv", f"{self.people_id};\n", new=False)
-        
-    #     # Separate experiences into founder company lines and other lines
-    #     founder_company_lines = []
-    #     other_lines = []
-        
-    #     for idx, experience in enumerate(self.experience_list):
-    #         if idx >= max_lines:  # Print only up to max_lines
-    #             break
-                
-    #         if experience["company"] == experience["from_date"]:
-    #             experience["company"] = ""
-                
-    #         if self.founder_company in experience["company"]:
-    #             company_match = True
-    #             max_lines = 8  # Change the max_lines to 8 if there's a match
-                
-    #             is_founder_flag = "1"
-    #             formatted_line = f"{experience['company']};{is_founder_flag};{experience['designation']};{experience['from_date']};{experience['to_date']};"
-    #             founder_company_lines.append(formatted_line)
-    #         else:
-    #             is_founder_flag = "0"
-    #             formatted_line = f"{experience['company']};{is_founder_flag};{experience['designation']};{experience['from_date']};{experience['to_date']};"
-    #             other_lines.append(formatted_line)
-        
-    #     # Print founder company lines first, then other lines
-    #     for line in founder_company_lines:
-    #         make_csv("linkidin_experience.csv", line, new=False)
-        
-    #     for line in other_lines:
-    #         make_csv("linkidin_experience.csv", line, new=False)
-        
-    #     make_csv("linkidin_experience.csv", "\n\n", new=False)
-    #     self.experience_list.clear()
-    #     time.sleep(3)
-    #     return self
-
-
-    # # =============================================================
-
-    # def export_education(self):
-    #     max_lines = 6  # Maximum number of lines to print
-    #     make_csv("linkidin_education.csv", f"""{self.people_id};\n""", new=False)
-    #     for idx, education in enumerate(self.education_list):
-    #         if idx >= max_lines:  # Print only up to max_lines
-    #             break
-    #         if education["degree"] == education["from_date"]:
-    #             education["degree"] = ""
-    #         make_csv("linkidin_education.csv", f"""{education["institude"]};{education["degree"]};{education["from_date"]};{education["to_date"]};""", new=False)
-        
-    #     make_csv("linkidin_education.csv", "\n\n", new=False)
-    #     self.education_list.clear()
-    #     time.sleep(3)
-    #     return self
-
-   
-    # # =============================================================
     # =============================================================
-    
-    
     
     def export_experience(self):
-        for experience in self.experience_list:
+        max_lines = 7  # Maximum number of lines to print initially
+        company_match = False  # Flag to indicate if Fcompany is found in experience list
+        make_csv("linkidin_experience.csv", f"{self.people_id};\n", new=False)
+        
+        # Separate experiences into founder company lines and other lines
+        founder_company_lines = []
+        other_lines = []
+        
+        for idx, experience in enumerate(self.experience_list):
+            if idx >= max_lines:  # Print only up to max_lines
+                break
+                
             if experience["company"] == experience["from_date"]:
                 experience["company"] = ""
-            make_csv("linkidin_experience.csv", f'''{self.people_id};{self.founder_company};{experience["company"]};{experience["designation"]};{experience["from_date"]};{experience["to_date"]};{experience["duration"]}\n''', new=False)
+                
+            if self.founder_company in experience["company"]:
+                company_match = True
+                max_lines = 8  # Change the max_lines to 8 if there's a match
+                
+                is_founder_flag = "1"
+                formatted_line = f"{experience['company']};{is_founder_flag};{experience['designation']};{experience['from_date']};{experience['to_date']};"
+                founder_company_lines.append(formatted_line)
+            else:
+                is_founder_flag = "0"
+                formatted_line = f"{experience['company']};{is_founder_flag};{experience['designation']};{experience['from_date']};{experience['to_date']};"
+                other_lines.append(formatted_line)
+        
+        # Print founder company lines first, then other lines
+        for line in founder_company_lines:
+            make_csv("linkidin_experience.csv", line, new=False)
+        
+        for line in other_lines:
+            make_csv("linkidin_experience.csv", line, new=False)
+        
         make_csv("linkidin_experience.csv", "\n\n", new=False)
-        #     make_csv("linkidin_experience.csv", f'''{experience["company"]};{experience["designation"]};{experience["from_date"]};{experience["to_date"]};{self.people_id};''', new=False)
-        # make_csv("linkidin_experience.csv", "\n\n", new=False)
-        # make_csv("linkidin_experience.csv", f'''{experience["designation"]};{experience["company"]};{experience["from_date"]};{experience["to_date"]};{self.people_id}\n''', new=False)
-        # make_csv("linkidin_experience.csv", "\n\n", new=False)
         self.experience_list.clear()
         time.sleep(5)
         return self
 
+
+    # =============================================================
+
     def export_education(self):
-        for education in self.education_list:
+        max_lines = 6  # Maximum number of lines to print
+        make_csv("linkidin_education.csv", f"""{self.people_id};\n""", new=False)
+        for idx, education in enumerate(self.education_list):
+            if idx >= max_lines:  # Print only up to max_lines
+                break
             if education["degree"] == education["from_date"]:
                 education["degree"] = ""
-            make_csv("linkidin_education.csv", f"""{self.people_id};{self.founder_company};{education["institude"]};{education["degree"]};{education["from_date"]};{education["to_date"]}\n""", new=False)
+            make_csv("linkidin_education.csv", f"""{education["institude"]};{education["degree"]};{education["from_date"]};{education["to_date"]};""", new=False)
+        
         make_csv("linkidin_education.csv", "\n\n", new=False)
-        # make_csv("linkidin_education.csv", f"""{education["degree"]};{education["from_date"]};{education["to_date"]};{education["institude"]};{self.people_id}\n""", new=False)
-        # make_csv("linkidin_education.csv", "\n", new=False)
         self.education_list.clear()
+        time.sleep(5)
         return self
+
+   
+    # =============================================================
+    # =============================================================
+    
+    
+    
+    # def export_experience(self):
+    #     for experience in self.experience_list:
+    #         if experience["company"] == experience["from_date"]:
+    #             experience["company"] = ""
+    #         make_csv("linkidin_experience.csv", f'''{experience["company"]};{experience["designation"]};{experience["from_date"]};{experience["to_date"]};{self.people_id};''', new=False)
+    #     make_csv("linkidin_experience.csv", "\n\n", new=False)
+    #     # make_csv("linkidin_experience.csv", f'''{experience["designation"]};{experience["company"]};{experience["from_date"]};{experience["to_date"]};{self.people_id}\n''', new=False)
+    #     # make_csv("linkidin_experience.csv", "\n\n", new=False)
+    #     self.experience_list.clear()
+    #     time.sleep(5)
+    #     return self
+
+    # def export_education(self):
+    #     for education in self.education_list:
+    #         if education["degree"] == education["from_date"]:
+    #             education["degree"] = ""
+    #         make_csv("linkidin_education.csv", f"""{education["institude"]};{education["degree"]};{education["from_date"]};{education["to_date"]};{self.people_id};""", new=False)
+    #     make_csv("linkidin_education.csv", "\n\n", new=False)
+    #     # make_csv("linkidin_education.csv", f"""{education["degree"]};{education["from_date"]};{education["to_date"]};{education["institude"]};{self.people_id}\n""", new=False)
+    #     # make_csv("linkidin_education.csv", "\n", new=False)
+    #     self.education_list.clear()
+    #     return self
     
     
     
