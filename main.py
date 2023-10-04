@@ -13,14 +13,7 @@ output_file = BASE_DIR / "output.csv"
 
 
 def main():
-    # Get a new undetected Chrome browser instance for the user
-    
-    USERNAME = "linkedint31@gmail.com"
-    PASSWORD = "Usman@112"
-    
-    
 
-    # driver = get_undetected_chrome_browser('christoph')
     driver = get_undetected_chrome_browser('christoph')
     
     with open(input_file, "r") as file:
