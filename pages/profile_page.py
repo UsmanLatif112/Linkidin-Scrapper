@@ -1,6 +1,7 @@
 import contextlib
 import time
 from .page import BasePage
+from datetime import datetime
 from resources.resourcces import ProfileResources
 
 
@@ -12,7 +13,18 @@ def make_csv(filename: str, data, new=True):
     with open(filename, mode, newline="", encoding='utf-8') as f:
         f.writelines(data)
 
-
+# def format_date(date_str):
+#     try:
+#         # Try to parse the date string as 'Mon YYYY' format
+#         date = datetime.strptime(date_str, '%b %Y')
+#         return date.strftime('%b %Y')  # Format it as 'Mon YYYY'
+#     except ValueError:
+#         # If parsing fails, assume it's just a year and add 'JAN' to it
+#         return 'Jan ' + date_str if date_str.isdigit() else date_str
+    
+    
+    
+    
 class ProfilePage(BasePage):
     experience_list = []
     education_list = []
@@ -114,8 +126,6 @@ class ProfilePage(BasePage):
         except Exception as e:
             print(e)
         return self
-    
-    # =============================================================
     # =============================================================
     
     def export_experience(self):
@@ -155,7 +165,7 @@ class ProfilePage(BasePage):
         
         make_csv("linkidin_experience.csv", "\n\n", new=False)
         self.experience_list.clear()
-        time.sleep(5)
+        time.sleep(3)
         return self
 
 
@@ -169,25 +179,25 @@ class ProfilePage(BasePage):
                 break
             if education["degree"] == education["from_date"]:
                 education["degree"] = ""
-            make_csv("linkidin_education.csv", f"""{education["institude"]};{education["degree"]};{education["from_date"]};{education["to_date"]};""", new=False)
+            make_csv("linkidin_education.csv", f"""{education["institude"]};{education["degree"]};{education["from_date"]};{education["to_date"]}\n""", new=False)
         
         make_csv("linkidin_education.csv", "\n\n", new=False)
         self.education_list.clear()
-        time.sleep(5)
+        time.sleep(3)
         return self
 
    
     # =============================================================
     # =============================================================
     
-    
-    
     # def export_experience(self):
     #     for experience in self.experience_list:
     #         if experience["company"] == experience["from_date"]:
     #             experience["company"] = ""
-    #         make_csv("linkidin_experience.csv", f'''{experience["company"]};{experience["designation"]};{experience["from_date"]};{experience["to_date"]};{self.people_id};''', new=False)
+    #         make_csv("linkidin_experience.csv", f'''{self.people_id};{self.founder_company};{experience["company"]};{experience["designation"]};{experience["from_date"]};{experience["to_date"]};{experience["duration"]}\n''', new=False)
     #     make_csv("linkidin_experience.csv", "\n\n", new=False)
+    #     #     make_csv("linkidin_experience.csv", f'''{experience["company"]};{experience["designation"]};{experience["from_date"]};{experience["to_date"]};{self.people_id};''', new=False)
+    #     # make_csv("linkidin_experience.csv", "\n\n", new=False)
     #     # make_csv("linkidin_experience.csv", f'''{experience["designation"]};{experience["company"]};{experience["from_date"]};{experience["to_date"]};{self.people_id}\n''', new=False)
     #     # make_csv("linkidin_experience.csv", "\n\n", new=False)
     #     self.experience_list.clear()
@@ -198,14 +208,12 @@ class ProfilePage(BasePage):
     #     for education in self.education_list:
     #         if education["degree"] == education["from_date"]:
     #             education["degree"] = ""
-    #     #     make_csv("linkidin_education.csv", f"""{education["institude"]};{education["degree"]};{education["from_date"]};{education["to_date"]};{self.people_id};""", new=False)
-    #     # make_csv("linkidin_education.csv", "\n\n", new=False)
+    #         make_csv("linkidin_education.csv", f"""{self.people_id};{self.founder_company};{education["institude"]};{education["degree"]};{education["from_date"]};{education["to_date"]}\n""", new=False)
+    #     make_csv("linkidin_education.csv", "\n\n", new=False)
     #     # make_csv("linkidin_education.csv", f"""{education["degree"]};{education["from_date"]};{education["to_date"]};{education["institude"]};{self.people_id}\n""", new=False)
     #     # make_csv("linkidin_education.csv", "\n", new=False)
     #     self.education_list.clear()
     #     return self
-    
-    
     
     # =============================================================
     # =============================================================

@@ -45,11 +45,11 @@ class BasePage:
         """This method will find and return a list of all available element from the driver"""
         return self.driver.find_elements(selector.ST, selector.SP)
 
-    def wait_until_find(self, selector: Selector, timeout: int = 20000, condition=EC.presence_of_element_located) -> WebElement:
+    def wait_until_find(self, selector: Selector, timeout: int = 20, condition=EC.presence_of_element_located) -> WebElement:
         """This method will wait for element to be present in DOM and return an available element from the driver"""
         return WebDriverWait(self.driver, timeout).until(condition((selector.ST, selector.SP)))
 
-    def wait_until_find_all(self, selector: Selector, timeout: int = 20000, condition=EC.presence_of_all_elements_located) -> List[WebElement]:
+    def wait_until_find_all(self, selector: Selector, timeout: int = 20, condition=EC.presence_of_all_elements_located) -> List[WebElement]:
         """This method will wait for elements to be present in DOM and return a list of all available element from the driver"""
         return WebDriverWait(self.driver, timeout).until(condition((selector.ST, selector.SP)))
     

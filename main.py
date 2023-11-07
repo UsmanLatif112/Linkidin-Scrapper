@@ -13,6 +13,11 @@ output_file = BASE_DIR / "output.csv"
 
 
 def main():
+    # Get a new undetected Chrome browser instance for the user
+    
+    USERNAME = "linkedint31@gmail.com"
+    PASSWORD = "Usman@112"
+    
 
     driver = get_undetected_chrome_browser('christoph')
     
@@ -45,8 +50,6 @@ def main():
             # except:
             #     pass
             
-                    
-
 
 if __name__ == '__main__':
     main()
