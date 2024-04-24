@@ -38,6 +38,10 @@ class ProfilePage(BasePage):
         try:
             experience_url = f"{self.url}details/experience/"
             self.driver.get(experience_url)
+            
+            time.sleep(3)
+            self.driver.refresh()
+            
             if 'This page doesn’t exist' not in self.driver.page_source:
                 containers = self.wait_until_find_all(ProfileResources.company_containers)
                 for container in containers:
@@ -88,6 +92,10 @@ class ProfilePage(BasePage):
             education_url = f"{self.url}details/education/"
             time.sleep(3)
             self.driver.get(education_url)
+            
+            time.sleep(3)
+            self.driver.refresh()
+            
             if 'This page doesn’t exist' not in self.driver.page_source:
                 degree = ''
                 from_date = ''
