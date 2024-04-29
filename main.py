@@ -17,6 +17,7 @@ def main():
     
     USERNAME = "linkedint31@gmail.com"
     PASSWORD = "Usman@112"
+    PASSWORD = "Usman@112"
     
 
     driver = get_undetected_chrome_browser('christoph')
